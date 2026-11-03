@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fotografiecoach – Sony α7 V in M-stand</title>
+<style>
+:root{
+  --paper:#f5f7f4; --surface:#ffffff; --ink:#1d2a27; --muted:#5b6965; --line:#dce3de;
+  --focus:#2f6f61; --focus-tint:#e5f0ec;
+  --expo:#47688c; --expo-tint:#e6edf5;
+  --alert:#8f6428; --alert-tint:#f6eedf;
+  --danger-ink:#991b1b; --danger-bg:#fef2f2; --danger-border:#f87171;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Avenir Next","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#111916; --surface:#19231f; --ink:#e5ece8; --muted:#9aaaa4; --line:#2b3833;
+    --focus:#7fc4b1; --focus-tint:#1c2e29;
+    --expo:#93b4d9; --expo-tint:#1d2937;
+    --alert:#dcaa65; --alert-tint:#2c2519;
+    --danger-ink:#fca5a5; --danger-bg:#341717; --danger-border:#7f1d1d;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* header */
+header{padding:36px 0 0}
+header h1{font:500 clamp(30px,4.5vw,46px)/1.08 var(--serif);margin:0 0 10px;letter-spacing:-.01em}
+header p{margin:0;max-width:65ch;color:var(--muted);font-size:16.5px}
+
+/* handleiding links sectie */
+.manual-qa-card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--expo);border-radius:12px;padding:18px;margin:18px 0 0}
+.manual-links-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:10px;margin-top:12px}
+.manual-link-card{display:flex;align-items:center;justify-content:space-between;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 14px;text-decoration:none;color:var(--ink);transition:all 0.15s ease}
+.manual-link-card:hover{border-color:var(--expo);background:var(--expo-tint);transform:translateY(-1px)}
+.manual-link-info{display:flex;flex-direction:column;gap:2px}
+.manual-link-info b{font-size:13.5px;line-height:1.3;color:var(--ink)}
+.manual-link-info span{font-size:12px;color:var(--muted)}
+.manual-link-badge{font-size:11px;font-weight:600;padding:3px 8px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+
+.manual-qa-header{display:flex;align-items:flex-start;gap:12px}
+.manual-qa-header svg{flex-shrink:0;margin-top:3px;color:var(--expo)}
+.manual-qa-header h3{margin:0 0 4px;font-size:17px;font-weight:650;color:var(--ink)}
+.manual-qa-header p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
+
+.tabs{display:flex;gap:4px;margin-top:26px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:12px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+:focus-visible{outline:2px solid var(--expo);outline-offset:2px;border-radius:4px}
+
+main{padding:26px 0 60px}
+.panelpage{display:none}
+.panelpage.on{display:block}
+
+/* plan layout */
+.layout{display:grid;grid-template-columns:300px 1fr;gap:30px;align-items:start}
+.side{position:sticky;top:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.side h2{font:500 21px/1.2 var(--serif);margin:0 0 14px}
+.field{margin:0 0 12px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:4px}
+select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font:inherit;font-size:14.5px;color:var(--ink)}
+.hint{font-size:12.5px;color:var(--muted);margin:4px 0 0}
+button.btn, a.btn{border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);padding:9px 14px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+button.btn:hover, a.btn:hover{border-color:var(--muted)}
+.btn-jump{display:none;width:100%;margin-bottom:12px;background:var(--expo-tint);color:var(--expo);border-color:var(--expo);justify-content:center}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+
+/* result header */
+.rtitle{font:500 clamp(24px,3.4vw,34px)/1.15 var(--serif);margin:0 0 6px}
+.rintro{margin:0 0 20px;color:var(--muted);max-width:65ch}
+
+/* strips */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.strip.s2{grid-template-columns:repeat(4,1fr);margin-top:10px}
+.cell{padding:14px 16px;border-left:1px solid var(--line);min-width:0}
+.cell:first-child{border-left:0}
+.cell small{display:block;font-size:12.5px;font-weight:600;color:var(--muted)}
+.cell b{display:block;font:500 21px/1.2 var(--serif);margin:3px 0 2px;overflow-wrap:anywhere}
+.cell span{font-size:12.5px;color:var(--muted)}
+.strip.expo .cell b{color:var(--expo)}
+.strip.foc .cell b{color:var(--focus);font-size:18px}
+
+/* sections */
+.sec{margin-top:32px}
+.sec>header{padding:0;margin-bottom:6px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.sec h3{font:500 23px/1.2 var(--serif);margin:0}
+.sec.expo h3{color:var(--expo)} .sec.foc h3{color:var(--focus)} .sec.neutral h3{color:var(--ink)}
+.sec .lead{margin:0 0 6px;color:var(--muted);font-size:14.5px;max-width:68ch}
+.row{display:grid;grid-template-columns:220px 1fr;gap:6px 24px;padding:14px 0;border-top:1px solid var(--line)}
+.rh h4{margin:0 0 5px;font-size:15.5px}
+.rv .val{font-size:16.5px;font-weight:650}
+.expo .rv .val{color:var(--expo)} .foc .rv .val{color:var(--focus)}
+.rv p{margin:4px 0 0;color:var(--muted);font-size:14.5px;max-width:68ch}
+.how{display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.path,.ctl{display:inline-block;font-size:12px;line-height:1.35;padding:3px 7px;border-radius:6px}
+.path{background:var(--expo-tint);color:var(--expo)}
+.foc .path{background:var(--focus-tint);color:var(--focus)}
+.ctl{border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.small{font-size:12.5px;font-weight:500;color:var(--muted)}
+
+/* lenses */
+.lenses{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.lens{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface)}
+.lens.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.lens b{font-size:14.5px;display:block}
+.lens .badge{display:inline-block;margin:5px 0 0;font-size:11.5px;font-weight:650;color:var(--surface);background:var(--ink);border-radius:20px;padding:1px 9px}
+.lens p{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+
+/* waarschuwingen & feedback */
+.note{margin-top:14px;padding:12px 16px;border-left:3px solid var(--alert);background:var(--alert-tint);border-radius:0 10px 10px 0;max-width:80ch;font-size:14.5px}
+.note b{color:var(--alert)}
+.note.danger{border-left-color:var(--danger-border);background:var(--danger-bg);color:var(--danger-ink)}
+.note.danger b{color:var(--danger-ink)}
+
+.box{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:16px 18px;margin-top:14px}
+.box h4{margin:0 0 8px;font-size:15.5px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:13.5px;background:var(--surface);cursor:pointer}
+.check input{margin-top:3px;accent-color:var(--focus)}
+.check:has(input:checked){background:var(--focus-tint);border-color:transparent}
+
+/* statische tabbladen */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cols .box{margin-top:0}
+.steps{counter-reset:s;list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.steps li{counter-increment:s;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:13px;font-size:14px}
+.steps li::before{content:counter(s);display:block;font:500 24px/1 var(--serif);color:var(--expo);margin-bottom:6px}
+.steps li b{display:block;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-top:1px solid var(--line)}
+th{font-weight:650;white-space:nowrap;padding-right:20px}
+td p{margin:0 0 4px}
+.tablewrap{overflow-x:auto}
+ul.plain{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:14.5px}
+ul.plain li{margin:3px 0}
+.setgroup{margin-top:24px}
+.setgroup h3{font:500 21px/1.2 var(--serif);margin:0 0 6px}
+.setlist{list-style:none;margin:0;padding:0}
+.setlist li{border-top:1px solid var(--line);padding:12px 0;display:grid;grid-template-columns:26px 1fr;gap:10px}
+.setlist input{margin-top:4px;width:17px;height:17px;accent-color:var(--focus);cursor:pointer}
+.setlist b{display:block;font-size:14.5px}
+.setlist p{margin:3px 0 0;color:var(--muted);font-size:14px}
+.setlist .path{margin-top:5px}
+.setlist li:has(input:checked) b{text-decoration:line-through;text-decoration-color:var(--muted);color:var(--muted)}
+
+footer{margin-top:34px;font-size:13px;color:var(--muted);max-width:80ch}
+
+@media(max-width:920px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static}
+  .btn-jump{display:inline-flex}
+  .strip{grid-template-columns:1fr 1fr}
+  .cell:nth-child(3){border-left:0}
+  .cell:nth-child(n+3){border-top:1px solid var(--line)}
+  .lenses,.cols{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .row{grid-template-columns:1fr}
+  .checks{grid-template-columns:1fr}
+  .strip.s2{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr}
+}
+@media print{
+  body{background:#fff;color:#000}
+  header p,.tabs,.side,.actions,footer,.btn-jump{display:none}
+  header{padding-top:0}
+  .layout{display:block}
+  .row,.box,.lens,.strip{break-inside:avoid}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Fotografiecoach voor je Sony α7 V</h1>
+    <p>Alles in de M-stand. Scherpstellen, belichten, lenzenbeheer (Tamron 25–200mm G2 &amp; Sony 90mm Macro) en Godox V860III flitsaansturing met de juiste menupaden.</p>
+
+    <section class="manual-qa-card" aria-label="Officiële handleidingen">
+      <div class="manual-qa-header">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><circle cx="12" cy="10" r="3"></circle><path d="M12 13v3"></path></svg>
+        <div>
+          <h3>Officiële Documentatie &amp; Downloads</h3>
+          <p>Directe links naar helpgidsen en productspecificaties.</p>
+        </div>
+      </div>
+
+      <div class="manual-links-grid">
+        <a href="https://helpguide.sony.net/ilc/2540/v1/nl/index.html" target="_blank" rel="noopener noreferrer" class="manual-link-card" title="Open officiële Sony α7 V (ILCE-7M5) Helpgids">
+          <div class="manual-link-info">
+            <b>Sony α7 V (ILCE-7M5)</b>
+            <span>Officiële Sony Helpgids (Online)</span>
+          </div>
+          <span class="manual-link-badge">Online ↗</span>
+        </a>
+
+        <a href="https://www.tamron.eu/nl-NL/p/10d0911d-05fe-4b02-8b0c-e893b8793d93/25-200mm-f28-56-di-iii-vxd-g2" target="_blank" rel="noopener noreferrer" class="manual-link-card" title="Open officiële Tamron 25-200mm G2 productpagina en documentatie">
+          <div class="manual-link-info">
+            <b>Tamron 25–200mm F/2.8–5.6 G2</b>
+            <span>Di III VXD G2 (Model A075)</span>
+          </div>
+          <span class="manual-link-badge">Online ↗</span>
+        </a>
+
+        <a href="https://helpguide.sony.net/ilc/1520/v1/nl/index.html" target="_blank" rel="noopener noreferrer" class="manual-link-card" title="Open Sony FE 90mm Macro officiële helpgids">
+          <div class="manual-link-info">
+            <b>Sony FE 90mm Macro G OSS</b>
+            <span>Officiële Helpgids (SEL90M28G)</span>
+          </div>
+          <span class="manual-link-badge">Online ↗</span>
+        </a>
+
+        <a href="https://www.godox.com/product-d/V860III.html" target="_blank" rel="noopener noreferrer" class="manual-link-card" title="Open officiële Godox V860III productpagina en downloads">
+          <div class="manual-link-info">
+            <b>Godox V860III-S (Sony)</b>
+            <span>Officiële Productpagina &amp; Downloads</span>
+          </div>
+          <span class="manual-link-badge">Online ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <nav class="tabs" role="tablist" aria-label="Navigatie onderdelen">
+      <button class="tab" role="tab" id="t-plan" aria-selected="true" aria-controls="p-plan" data-tab="plan" tabindex="0">Opnameplan</button>
+      <button class="tab" role="tab" id="t-expo" aria-selected="false" aria-controls="p-expo" data-tab="expo" data-tab-index="1" tabindex="-1">Belichting in M</button>
+      <button class="tab" role="tab" id="t-foc" aria-selected="false" aria-controls="p-foc" data-tab="foc" data-tab-index="2" tabindex="-1">Scherpstellen</button>
+      <button class="tab" role="tab" id="t-flash" aria-selected="false" aria-controls="p-flash" data-tab="flash" data-tab-index="3" tabindex="-1">Godox V860III Flitser</button>
+      <button class="tab" role="tab" id="t-set" aria-selected="false" aria-controls="p-set" data-tab="set" data-tab-index="4" tabindex="-1">Eenmalig instellen</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ OPNAMEPLAN ============ -->
+<section class="panelpage on" id="p-plan" role="tabpanel" aria-labelledby="t-plan">
+  <div class="layout">
+    <aside class="side">
+      <h2>Wat ga je fotograferen?</h2>
+      <a href="#result-anchor" class="btn btn-jump">Bekijk direct advies ↓</a>
+      <div class="field"><label for="genre">Soort fotografie</label>
+        <select id="genre">
+          <option value="macro">Macro – kleine details</option>
+          <option value="bloem">Bloemen en planten</option>
+          <option value="insect">Insecten</option>
+          <option value="portret">Portret</option>
+          <option value="straat">Straatfotografie</option>
+          <option value="landschap">Landschap</option>
+          <option value="architectuur">Architectuur</option>
+          <option value="nacht">Avond en nacht</option>
+          <option value="sterren">Sterrenhemel</option>
+          <option value="actie">Sport en actie</option>
+          <option value="vogel">Vogels en wildlife</option>
+          <option value="water">Water en beweging</option>
+          <option value="stilleven">Stilleven en detail</option>
+          <option value="reis">Reisfotografie</option>
+        </select></div>
+      <div class="field"><label for="subject">Onderwerp en beweging</label>
+        <select id="subject">
+          <option value="stil">Staat stil</option>
+          <option value="rustig">Beweegt langzaam</option>
+          <option value="snel">Beweegt snel</option>
+          <option value="onvoorspelbaar">Beweegt onvoorspelbaar</option>
+          <option value="mens">Persoon die poseert</option>
+          <option value="groep">Meerdere personen</option>
+        </select></div>
+      <div class="field"><label for="support">Ondersteuning &amp; stabiliteit</label>
+        <select id="support">
+          <option value="hand">Uit de hand (stabiel)</option>
+          <option value="hand_unstable">Uit de hand (onvaste hand / trilling)</option>
+          <option value="monopod">Monopod (éénpootstatief)</option>
+          <option value="tripod">Op vast statief</option>
+        </select></div>
+      <div class="field"><label for="light">Lichtomstandigheden</label>
+        <select id="light">
+          <option value="soft">Bewolkt of zacht daglicht</option>
+          <option value="sun">Felle zon (hoog contrast)</option>
+          <option value="shade">Schaduw / open schaduw</option>
+          <option value="gold">Gouden uur (ochtend/avond)</option>
+          <option value="indoor">Binnen, kunst- of raamlicht</option>
+          <option value="low">Weinig licht of schemering</option>
+          <option value="night">Donker / nachtelijke straat</option>
+          <option value="back">Tegenlicht</option>
+        </select></div>
+      <div class="field"><label for="goal">Wat wil je bereiken?</label>
+        <select id="goal">
+          <option value="sharp">Onderwerp zo scherp mogelijk</option>
+          <option value="blur">Zachte, onscherpe achtergrond (bokeh)</option>
+          <option value="deep">Veel van voor tot achter scherp</option>
+          <option value="freeze">Beweging bevriezen</option>
+          <option value="motion">Beweging zichtbaar maken (vloeiend/panning)</option>
+          <option value="natural">Natuurlijke sfeer en licht</option>
+        </select></div>
+      <div class="field"><label for="distance">Afstand tot onderwerp</label>
+        <select id="distance">
+          <option value="auto">Nog niet bepaald / Flexibel</option>
+          <option value="close">Zeer dichtbij (10–30 cm)</option>
+          <option value="near">Dichtbij (30–80 cm)</option>
+          <option value="mid">Gemiddeld (1–3 m)</option>
+          <option value="far">Verder weg (3–10 m)</option>
+          <option value="long">Grote afstand (&gt; 10 m)</option>
+        </select></div>
+      <div class="field"><label for="lens">Objectief</label>
+        <select id="lens">
+          <option value="auto">Laat de coach adviseren</option>
+          <option value="tamron">Tamron 25–200mm F/2.8–5.6 Di III VXD G2</option>
+          <option value="sony90">Sony FE 90mm F2.8 Macro G OSS</option>
+        </select></div>
+      <div class="field"><label for="focal">Gewenste brandpuntsafstand</label>
+        <select id="focal">
+          <option value="auto">Laat de coach kiezen</option>
+          <option value="wide">Groothoek (25–35 mm)</option>
+          <option value="normal">Normaal (40–70 mm)</option>
+          <option value="portrait">Portret / Korte tele (85–105 mm)</option>
+          <option value="tele">Tele (120–200 mm)</option>
+        </select></div>
+      <div class="field"><label for="flash">Flitser (Godox V860III)</label>
+        <select id="flash">
+          <option value="none">Geen flitser (uitsluitend natuurlijk licht)</option>
+          <option value="auto">Adviseer automatisch indien nodig</option>
+          <option value="fill">Subtiele invulflits (tegenlicht / harde zon)</option>
+          <option value="bounce">Indirect flitsen / Bouncen (binnen)</option>
+          <option value="main">Hoofdlicht (zeer donker / nacht)</option>
+          <option value="slow">Slow-sync sfeerflits (schemering/nacht)</option>
+        </select></div>
+      <div class="actions"><button class="btn" id="reset">Herstel keuzes</button></div>
+    </aside>
+
+    <section id="result-anchor">
+      <h2 class="rtitle" id="title"></h2>
+      <p class="rintro" id="intro"></p>
+
+      <div id="conflict-alert" role="status" aria-live="polite"></div>
+      <div id="expo-alert" role="status" aria-live="polite"></div>
+
+      <div id="out"></div>
+
+      <div class="actions" style="margin-top:22px">
+        <button class="btn" id="print">Print of bewaar als PDF</button>
+        <button class="btn" id="copy">Kopieer compleet opnameplan</button>
+      </div>
+      <footer>Startwaarden voor de Sony α7 V in M-stand. Evalueer altijd je RAW-histogram en zebra na afdrukken. Alle knoppaden stemmen overeen met het menusysteem van Sony ILCE-7M5.</footer>
+    </section>
+  </div>
+</section>
+
+<!-- ============ BELICHTING IN M ============ -->
+<section class="panelpage" id="p-expo" role="tabpanel" aria-labelledby="t-expo">
+  <div class="sec expo" style="margin-top:0">
+    <header><h3>Zo werk je in M</h3></header>
+    <p class="lead">In M bepaal jij diafragma en sluitertijd. Met ISO AUTO vult de camera de rest aan. Dat is de snelste en meest gecontroleerde workflow voor wisselend licht.</p>
+    <ol class="steps">
+      <li><b>Sluitertijd</b>Kies eerst wat de beweging vraagt (bevriezen, cameratrilling weren of beweging tonen).</li>
+      <li><b>Diafragma</b>Kies daarna de scherptediepte: zachte achtergrond of maximale randscherpte.</li>
+      <li><b>ISO AUTO</b>Laat de camera ISO aanvullen met een vastgesteld veiligheidsmaximum.</li>
+      <li><b>Correctie</b>Is de belichting te licht of te donker, corrigeer via de achterste keuzeknop R.</li>
+      <li><b>Controle</b>Kijk naar histogram en zebra. Let op: deze zijn gebaseerd op de JPEG-preview; RAW heeft ca. 0,5 tot 1 stop extra schaduw- en hooglichtmarge.</li>
+    </ol>
+  </div>
+
+  <div class="sec expo">
+    <header><h3>Bediening in M op de α7 V</h3></header>
+    <div class="tablewrap"><table>
+      <tr><th>Diafragma</th><td><p><span class="ctl">Voorste keuzeknop</span></p><p class="small">Lager f-getal is meer licht en minder scherptediepte.</p></td></tr>
+      <tr><th>Sluitertijd</th><td><p><span class="ctl">Achterste keuzeknop L</span></p><p class="small">Instelbaar per 1/3 EV-stap. Wijzigbaar via <span class="path">MENU › Instellingen › Bedien. aanpass. › Eig. t.-/dr.kn.inst.</span></p></td></tr>
+      <tr><th>ISO</th><td><p><span class="ctl">ISO op het besturingswiel</span> <span class="path">MENU › Belichting/kleur › Belichting › ISO</span></p><p class="small">Druk op het besturingswiel naar rechts voor ISO AUTO min/max bereik.</p></td></tr>
+      <tr><th>Belichtingscorrectie</th><td><p><span class="ctl">Achterste keuzeknop R</span></p><p class="small">Ontgrendel het wiel (witte lijn zichtbaar). <b>In de M-stand werkt dit alleen wanneer ISO op AUTO staat.</b></p></td></tr>
+      <tr><th>Sluitertype &amp; Banding</th><td><p><span class="path">MENU › Opname › Sluiter/opn.st. › Sluitertype</span></p><p class="small">Kies <b>Mechanische sluiter</b> of <b>Elektron. 1e gordijn</b> bij kunstlicht (tegen banding) en bij flitsfotografie. Zuiver elektronische sluiter kan banding vertonen en flits/HSS blokkeren.</p></td></tr>
+      <tr><th>Weergave instellingen (Live View)</th><td><p><span class="path">MENU › Opname › Opnameweergave › Weerg. instellingen</span></p><p class="small">Zet bij flitsen in een donkere omgeving met vaste lage ISO op <b>Uit</b> als het zoekerbeeld te donker wordt om te kaderen.</p></td></tr>
+      <tr><th>Histogram &amp; Niveau</th><td><p><span class="ctl">DISP-knop</span></p><p class="small">Druk op DISP tot ‘Histogram en niv.’ verschijnt. Piek tegen de rechterkant = uitgebeten hooglichten.</p></td></tr>
+      <tr><th>Zebra-weergave</th><td><p><span class="path">MENU › Belichting/kleur › Zebra-weergave</span></p><p class="small">Zet op Aan (niveau 100+ voor puur wit, 95 voor hooglichtwaarschuwing in portretten).</p></td></tr>
+    </table></div>
+  </div>
+
+  <div class="sec expo">
+    <header><h3>Beeldstabilisatie (SteadyShot) Vuistregels</h3></header>
+    <p class="lead">De α7 V heeft geavanceerde 5-assige IBIS. Moderne camera's registreren statiefgebruik vaak zelf, maar onderstaande vuistregels waarborgen absolute scherpte:</p>
+    <div class="tablewrap"><table>
+      <tr><th>Uit de hand</th><td><p><b>SteadyShot: Aan</b></p><p class="small">Houd Aan via het menu of de fysieke lensknop (OSS). Vuistregel sluitertijd: minimaal <code>1 / brandpuntsafstand</code>.</p></td></tr>
+      <tr><th>Uit de hand (onvaste hand)</th><td><p><b>SteadyShot: Aan + Sluitertijdmarge</b></p><p class="small">Neem minimaal <b>2× tot 2,5× de sluitertijd</b> (bijv. 1/250s i.p.v. 1/100s) en stel Contin. opname in op Lo/Mid om de scherpste opname uit een korte burst te kiezen.</p></td></tr>
+      <tr><th>Monopod (éénpootstatief)</th><td><p><b>SteadyShot: Aan</b></p><p class="small">Een monopod absorbeert verticale beweging maar laat zijdelingse zwaai en micro-kantelingen toe. IBIS ingeschakeld laten.</p></td></tr>
+      <tr><th>Vast statief</th><td><p><b>SteadyShot: Uit (Vuistregel)</b></p><p class="small">Bij lange sluitertijden (&gt; 1s) schakel je SteadyShot bij voorkeur <b>Uit</b> om interne correctielussen te voorkomen. Gebruik een 2-seconden zelfontspanner.</p></td></tr>
+      <tr><th>Lens met fysieke OSS-knop</th><td><p class="small">De fysieke Optical SteadyShot-schakelaar op de Sony 90mm Macro heeft altijd voorrang op het interne cameramenu.</p></td></tr>
+    </table></div>
+  </div>
+
+  <div class="sec expo">
+    <header><h3>Lichtmeting &amp; Koppeling</h3></header>
+    <div class="tablewrap"><table>
+      <tr><th>Multi</th><td>Standaard. Meet over het hele beeld. Betrouwbaar bij zacht en gelijkmatig licht.</td></tr>
+      <tr><th>Spot + AF-punt</th><td><p>Meet in een kleine cirkel. <b>Belangrijk:</b> zet <span class="path">MENU › Belichting/kleur › Lichtmeting › Puntmeetpunt</span> op <b>Scherpstelpunt-koppeling</b>. Zo meet de camera altijd exact waar je onderwerp staat en scherpgesteld wordt!</p></td></tr>
+      <tr><th>Midden</th><td>Gewogen gemiddelde met nadruk op het midden.</td></tr>
+      <tr><th>Hooglicht</th><td>Prioriteit op het helderste deel; voorkomt uitgebeten wolken of lampen.</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ SCHERPSTELLEN ============ -->
+<section class="panelpage" id="p-foc" role="tabpanel" aria-labelledby="t-foc">
+  <div class="sec foc" style="margin-top:0">
+    <header><h3>Scherpstelfuncties (AF/MF)</h3><span class="path" style="background:var(--focus-tint);color:var(--focus)">MENU › Scherpstelling › AF/MF › Scherpstelfunctie</span></header>
+    <div class="tablewrap"><table>
+      <tr><th>Enkelvoudige AF (AF-S)</th><td><p>Stelt eenmalig scherp en vergrendelt. Voor stilstaande onderwerpen, landschappen en geposeerde portretten.</p></td></tr>
+      <tr><th>Continue AF (AF-C)</th><td><p>Blijft continu focussen zolang de ontspanknop half ingedrukt is of AF-ON actief is. Onmisbaar voor sport, vogels, spelende kinderen en insecten.</p></td></tr>
+      <tr><th>DMF</th><td><p>Autofocus stelt scherp, waarna je met de scherpstelring direct handmatig kunt corrigeren. Ideaal bij bloemen en macro.</p></td></tr>
+      <tr><th>Handmatig (MF)</th><td><p>Volledige handmatige controle met de scherpstelring, ondersteund door automatische vergroting en focus peaking (Reliëf).</p></td></tr>
+    </table></div>
+  </div>
+
+  <div class="sec foc">
+    <header><h3>Focus Bracketing voor Macro &amp; Landschap</h3></header>
+    <p class="lead">De α7 V beschikt over een ingebouwde focus bracketing functie (<span class="path">MENU › Opname › Opnamemodus › Scherpstelreeks</span>). Hiermee maakt de camera automatisch een reeks opnamen waarbij het scherpstelpunt stapsgewijs verschuift van voor naar achter. Onmisbaar voor macro op f/5.6 of f/8 om diffractie bij f/16 te vermijden.</p>
+  </div>
+
+  <div class="sec foc">
+    <header><h3>Back-Button Focus (AF-ON) Valkuil</h3></header>
+    <div class="note"><b>Valkuil bij AF-ON:</b> Zet je <span class="path">MENU › Scherpstelling › AF/MF › AF met sluiter</span> op <b>Uit</b>, dan stelt de sluiterknop niet meer scherp. Vergeet je de AF-ON knop in te drukken, dan ontspan je op een onscherp beeld! Oefen dit tot het een automatisme is.</div>
+  </div>
+</section>
+
+<!-- ============ GODOX V860III FLITSER ============ -->
+<section class="panelpage" id="p-flash" role="tabpanel" aria-labelledby="t-flash">
+  <div class="sec expo" style="margin-top:0">
+    <header><h3>Godox V860III Flitser op de Sony α7 V</h3></header>
+    <p class="lead">TTL berekent het flitsvermogen razendsnel via de lens. Gebruik flitslicht als zacht invullicht of als gecontroleerd hoofdlicht. Raadpleeg de <a href="https://www.godox.com/product-d/V860III.html" target="_blank" rel="noopener noreferrer">officiële Godox V860III productpagina</a> of download direct de <a href="https://www.godox.com/static/upload/file/20241203/1733195643735791.pdf" target="_blank" rel="noopener noreferrer">officiële handleiding (PDF)</a>.</p>
+    <ol class="steps">
+      <li><b>Snelschakelaar (TTL)</b>Zet de fysieke schuifknop op de linkerzijde van de Godox op <b>TTL</b>.</li>
+      <li><b>Zoom op Auto</b>Controleer dat linksboven in het scherm <b>Zoom A</b> staat; de flitser volgt dan automatisch je zoombereik (20–200 mm).</li>
+      <li><b>HSS Activeren</b>Druk op de <span class="ctl">SYNC</span>-knop (Functietoets 3) tot het <b>H</b>-icoon brandt als de sluitertijd sneller is dan 1/250s.</li>
+      <li><b>Compensatie (FEC)</b>Druk op &lt;+/–&gt; en stel flitscompensatie in op −0,7 tot −1,3 EV voor een subtiele, natuurlijke invulling.</li>
+      <li><b>Slow Sync Sfeer</b>Kies in de schemering voor sluitertijden van 1/15 tot 1/60 s om omgevingssfeer vast te leggen terwijl de flitser het onderwerp bevriest.</li>
+    </ol>
+  </div>
+
+  <div class="sec expo">
+    <header><h3>Flitsvalkuilen en Richtlijnen</h3></header>
+    <div class="tablewrap"><table>
+      <tr><th>LED-instellamp als AF-hulplicht</th><td>Rode infrarood-hulplampen op flitsers werken niet op de fasedetectie-sensoren van Sony systeemcamera's. Gebruik in het donker de ingebouwde <b>2W LED-instellamp</b> voorop de Godox: schakel deze direct in met de fysieke <b>lamp-knop rechtsonder</b> op het bedieningspaneel en regel de helderheid met het instelwiel.</td></tr>
+      <tr><th>HSS Vermogensverlies</th><td>Bij High-Speed Sync (&gt; 1/250s) zendt de flitser een stroboscopische puls uit. Dit kost enorm veel accucapaciteit en effectief bereik. <b>Alternatief:</b> diafragmeer naar f/8 of gebruik een ND-filter om onder 1/250s te blijven.</td></tr>
+      <tr><th>Zwarte achtergronden vermijden</th><td>Flitsen bij 1/200s en ISO 100 in de schemering maakt de achtergrond pikzwart. Gebruik <b>Slow Sync</b> (langere sluitertijd 1/15–1/60s of hogere ISO) om achtergrondverlichting zacht binnen te laten.</td></tr>
+      <tr><th>Flitsbelichtingscompensatie (FEC)</th><td>Standaard TTL kan gezichten flets maken. Stel op de flitser standaard <b>−0,7 tot −1,3 EV</b> in voor onopvallend invullicht.</td></tr>
+      <tr><th>ISO bij binnenshuis flitsen</th><td>Houd ISO AUTO begrensd op <b>1600 tot 3200</b>; zo vult de flitser alleen het nodige bij zonder dat ruis de overhand krijgt.</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ EENMALIG INSTELLEN ============ -->
+<section class="panelpage" id="p-set" role="tabpanel" aria-labelledby="t-set">
+  <p class="lead" style="margin:0;color:var(--muted);max-width:64ch">Stel deze basisconfiguratie eenmalig in op je α7 V. Vinkjes worden automatisch bewaard op dit apparaat.</p>
+
+  <div class="setgroup">
+    <h3 style="color:var(--expo)">Belichting &amp; Stabilisatie</h3>
+    <ul class="setlist">
+      <li><input type="checkbox" id="c1" data-storage="c1"><div><b>Functiekeuzeknop op M</b><p>Handmatige belichting. Diafragma op de voorste keuzeknop, sluitertijd op de achterste knop L.</p></div></li>
+      <li><input type="checkbox" id="c_ss" data-storage="c_ss"><div><b>SteadyShot standaard op Aan</b><p>Houd 5-assige IBIS ingeschakeld. Schakel alleen uit bij statiefopnamen met lange sluitertijden.</p><span class="path">MENU › Opname › Beeldstabilisatie › SteadyShot › Aan</span></div></li>
+      <li><input type="checkbox" id="c2" data-storage="c2"><div><b>ISO AUTO met verstandig bereik</b><p>ISO AUTO minimum 100, maximum 6400 (of 12800 bij actie/onvaste hand). Instelbaar via besturingswiel.</p><span class="path">MENU › Belichting/kleur › Belichting › ISO</span></div></li>
+      <li><input type="checkbox" id="c_spot" data-storage="c_spot"><div><b>Puntmeetpunt koppelen aan focuspunt</b><p>Zorgt dat Spotmeting exact meet op het actieve AF-punt in plaats van vast in het midden.</p><span class="path">MENU › Belichting/kleur › Lichtmeting › Puntmeetpunt › Scherpstelpunt-kopp.</span></div></li>
+      <li><input type="checkbox" id="c4" data-storage="c4"><div><b>Zebra-weergave actief</b><p>Niveau 100+ ter bescherming tegen uitgebeten witten.</p><span class="path">MENU › Belichting/kleur › Zebra-weergave</span></div></li>
+      <li><input type="checkbox" id="c_lv" data-storage="c_lv"><div><b>Weergave instellingen (Live View) onder Fn-menu</b><p>Handig bij flitsen in het donker op M-stand: zet op Uit als de zoeker te donker is om te kaderen.</p><span class="path">MENU › Opname › Opnameweergave › Weerg. instellingen</span></div></li>
+      <li><input type="checkbox" id="c_raw" data-storage="c_raw"><div><b>Bestandsindeling: RAW (of RAW + JPEG)</b><p>RAW biedt tot 1,5 stop extra dynamische marge in hooglichten ten opzichte van de JPEG-preview.</p><span class="path">MENU › Opname › Beeldkwaliteit/opn. › Beeldkwaliteit-inst. › Bestandsindeling › RAW</span></div></li>
+    </ul>
+  </div>
+
+  <div class="setgroup">
+    <h3 style="color:var(--focus)">Scherpstellen &amp; Snelheid</h3>
+    <ul class="setlist">
+      <li><input type="checkbox" id="c7" data-storage="c7"><div><b>Onderwerpherkenning actief</b><p>Zet Ond.w.herk. in AF op Aan en selecteer passend doel (Mens, Dier/vogel, Vogel of Insect).</p><span class="path" style="background:var(--focus-tint);color:var(--focus)">MENU › Scherpstelling › Onderw.herkenn. › Ond.w.herk. in AF</span></div></li>
+      <li><input type="checkbox" id="c8" data-storage="c8"><div><b>Scherpstelgebied: Zone of Volgen: Zone</b><p>Snel oproepbaar met de C2-knop.</p><span class="path" style="background:var(--focus-tint);color:var(--focus)">MENU › Scherpstelling › Scherpstelgebied › Scherpstelgebied</span></div></li>
+      <li><input type="checkbox" id="c9" data-storage="c9"><div><b>Focus Peaking (Reliëf) en Aut. MF-vergroting</b><p>Reliëfkleur Rood/Geel bij handmatig scherpstellen of DMF.</p><span class="path" style="background:var(--focus-tint);color:var(--focus)">MENU › Scherpstelling › Schrpst.hulpmid.</span></div></li>
+      <li><input type="checkbox" id="c11" data-storage="c11"><div><b>Voorrang: AF-S op AF, AF-C op Gebalanceerde Nadruk</b><p>Voorkomt afdrukken bij onscherpte in AF-S en optimaliseert reactietijd in AF-C.</p><span class="path" style="background:var(--focus-tint);color:var(--focus)">MENU › Scherpstelling › AF/MF › Voork.-inst. in AF-S / AF-C</span></div></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const V=id=>$(id).value;
+const stripHtml = str => str.replace(/<[^>]+>/g, '');
+
+/* ---------- Toegankelijke Tab Navigatie ---------- */
+const tabs = Array.from(document.querySelectorAll('.tab'));
+tabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => selectTab(index));
+  tab.addEventListener('keydown', e => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+    else if (e.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+    else if (e.key === 'Home') nextIndex = 0;
+    else if (e.key === 'End') nextIndex = tabs.length - 1;
+    if (nextIndex !== null) {
+      e.preventDefault();
+      tabs[nextIndex].focus();
+      selectTab(nextIndex);
+    }
+  });
+});
+
+function selectTab(index) {
+  tabs.forEach((t, i) => {
+    const isSelected = i === index;
+    t.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+    t.setAttribute('tabindex', isSelected ? '0' : '-1');
+    const panel = $('p-' + t.dataset.tab);
+    if (panel) panel.classList.toggle('on', isSelected);
+  });
+}
+
+/* ---------- Lokale opslag voor checkboxes ---------- */
+document.querySelectorAll('input[data-storage]').forEach(box => {
+  const key = 'a7v_setting_' + box.dataset.storage;
+  try {
+    box.checked = localStorage.getItem(key) === 'true';
+  } catch(e){}
+  box.addEventListener('change', () => {
+    try {
+      localStorage.setItem(key, box.checked ? 'true' : 'false');
+    } catch(e){}
+  });
+});
+
+/* ---------- Lenzen Specificaties (Tamron 25-200mm G2 A075 & Sony 90mm) ---------- */
+const LENS = {
+  tamron: {
+    name: 'Tamron 25–200mm F/2.8–5.6 Di III VXD G2',
+    open: 'f/2.8 bij 25 mm, f/3.5 bij 35 mm, f/4 bij 50 mm, f/5 bij 80 mm, f/5.6 bij 96–200 mm',
+    min: 25, max: 200, oss: false
+  },
+  sony90: {
+    name: 'Sony FE 90mm F2.8 Macro G OSS',
+    open: 'f/2.8 over het gehele bereik',
+    min: 90, max: 90, oss: true
+  }
+};
+
+function getMaxAperture(focal, lensKey) {
+  if (lensKey === 'sony90') return 2.8;
+  if (focal <= 28) return 2.8;
+  if (focal <= 40) return 3.5;
+  if (focal <= 65) return 4.0;
+  if (focal <= 80) return 4.5;
+  if (focal < 96) return 5.0;
+  return 5.6;
+}
+
+function getMinFocusDistanceCm(focal, lensKey) {
+  if (lensKey === 'sony90') return 28;
+  if (focal <= 28) return 16;
+  if (focal <= 50) return 25;
+  if (focal <= 100) return 45;
+  return 80;
+}
+
+/* ---------- Lichtwaarden Tabel (EV bij ISO 100) ---------- */
+const EV_TABLE = {
+  sun: 15,
+  soft: 12,
+  shade: 11,
+  gold: 10,
+  indoor: 7,
+  low: 4,
+  night: 1,
+  back: 13
+};
+
+/* ---------- Scenario Database ---------- */
+const G = {
+macro:{
+  n:'Macro – kleine details',
+  i:'Scherptediepte is uiterst dun. Beheersing van diffractie, trillingen en eventuele focus bracketing zijn doorslaggevend.',
+  b:'sony90',
+  l:{tamron:'Sterke half-macro (1:1.9 op 25 mm bij 16 cm afstand) of 70–135 mm voor meer werkafstand (45–65 cm).',
+     sony90:'Beste keuze: 1:1 ware macrolens met uitzonderlijke randscherpte en fysieke focusbegrenzer.'},
+  f:90, ft:{tamron:'25 mm (kort) of 90–135 mm'}, ms:250,
+  d:'Werk op ca. 28–35 cm sensorafstand (Sony 90mm) of 16–50 cm (Tamron G2).',
+  t:'Het exacte oog, stamper of fijnste textuurdetail.',
+  af:'DMF', ar:'Punt: S', rc:['Uit',''],
+  ap:['f/5.6–f/8','Boven f/11 treedt merkbare diffractie op. Gebruik focus bracketing indien meer scherptediepte vereist is.'],
+  me:'Multi',
+  w:'Diffractie vermindert scherpte boven f/11. Maak bij voorkeur een scherpstelreeks (focus stack) i.p.v. extreem diafragmeren.',
+  x:'Gebruik bij voorkeur een statief. Uit de hand: ellebogen strak tegen het lichaam en ontspan tijdens rustige uitademing.'
+},
+bloem:{
+  n:'Bloemen en planten',
+  i:'Isoleer de bloem met een zachte achtergrond of leg verfijnde meeldraadstructuren vast.',
+  b:'sony90',
+  l:{tamron:'Flexibel in veldwerk; fraai op 70–135 mm of dichtbij op 25–35 mm.',sony90:'Uitmuntend bokeh op f/2.8 en ragscherpe details.'},
+  f:90, ft:{tamron:'70–135 mm'}, ms:250,
+  d:'0,3 tot 1,5 meter. Meer afstand zorgt voor een rustigere achtergrondscheiding.',
+  t:'Het hart van de bloem of de voorste meeldraden.',
+  af:'S', ar:'Punt: S', rc:['Uit',''],
+  ap:['f/4–f/5.6','Zachte achtergrond. Kies f/8 voor scherpte over meerdere bloemblaadjes.'],
+  me:'Multi',
+  w:'Wind veroorzaakt snel bewegingsonscherpte. Verhoog bij wind de sluitertijd naar minimaal 1/500s.',
+  x:'Kies een standpunt met rustig tegenlicht of open schaduw.'
+},
+insect:{
+  n:'Insecten',
+  i:'Insecten bewegen snel en onvoorspelbaar; korte sluitertijden en scherpe oogdetectie zijn cruciaal.',
+  b:'sony90',
+  l:{tamron:'Handig voor schuwe insecten op 150–200 mm (werkafstand ca. 80 cm) met snelle VXD-autofocus.',
+     sony90:'1:1 vergroting op 28 cm afstand. Benader uiterst rustig.'},
+  f:90, ft:{tamron:'150–200 mm'}, ms:500, mr:1000,
+  d:'Sony 90mm: 28–40 cm. Tamron G2: 80–120 cm (op 150–200 mm).',
+  t:'De facetogen of de kop van het insect.',
+  af:'C', ar:'Punt: S', rc:['Insect',''],
+  ap:['f/5.6–f/8','Balans tussen millimeters scherptediepte en lichtinval.'],
+  me:'Multi',
+  w:'Gebruik Continue AF (AF-C) met Insectenherkenning. Een zittend insect beweegt voelsprieten continu.',
+  x:'Beweeg zonder schokken zijwaarts en fotografeer in een korte snelle burst (Hi).'
+},
+portret:{
+  n:'Portret',
+  i:'Natuurlijk perspectief, scherpte op de iris en een fraaie achtergrondonscherpte.',
+  b:'sony90',
+  l:{tamron:'Zoom naar 70–105 mm (f/4.5–f/5.6) voor een rustig perspectief.',sony90:'Het ultieme portretbrandpunt: f/2.8 levert sublieme scheiding.'},
+  f:80, ft:{tamron:'75–105 mm'}, ms:250,
+  d:'1,5 tot 3 meter voor hoofd en schouders.',
+  t:'Het dichtstbijzijnde oog.',
+  af:'S', ar:'Zone', rc:['Mens','Oog'],
+  ap:['f/2.8–f/5.6','Fraaie scheiding van de achtergrond. f/5.6–f/8 voor groepsportretten.'],
+  me:'Multi',
+  w:'Controleer dat de oogdetectie niet verspringt naar wimpers of brillenrand.',
+  x:'Plaats het model in zachte open schaduw of gebruik raamlicht met ruimte tot de wand.'
+},
+straat:{
+  n:'Straatfotografie',
+  i:'Alert reageren op onverwachte scènes; ruime scherptediepte vangt snelle interacties.',
+  b:'tamron',
+  l:{tamron:'25–50 mm voor sfeer en overzicht; 85 mm voor onopvallende isolatie.',sony90:'Te krap voor overzichtsbeelden.'},
+  f:35, ft:{tamron:'25–50 mm'}, ms:250, mr:500,
+  d:'2 tot 6 meter voor natuurlijke interactie.',
+  t:'Bij mensen het gezicht; bij stadsbeelden een markant contrastdetail.',
+  af:'C', ar:'Zone', rc:['Mens','Oog'],
+  ap:['f/5.6–f/8','Ruime dieptescherpte voor snelle respons zonder focustwijfel.'],
+  me:'Multi', pr:'Gebal. Nadruk',
+  w:'Lopende voorbijgangers vereisen minimaal 1/500s om beweging in benen en handen te bevriezen.',
+  x:'Kies een sterk kader en wacht rustig tot het juiste onderwerp erin stapt.'
+},
+landschap:{
+  n:'Landschap',
+  i:'Dieptewerking van voorgrond tot oneindig met optimale randscherpte.',
+  b:'tamron',
+  l:{tamron:'25 mm voor weids overzicht; tele om bergkammen en grafische patronen te isoleren.',sony90:'Uitmuntend voor detailuitsnedes en landschapslagen.'},
+  f:25, ft:{tamron:'25–35 mm'}, ms:125,
+  d:'Stel scherp op de hyperfocale afstand (bij 25mm en f/8 ca. 2,8 tot 4 meter) voor scherpte tot oneindig.',
+  t:'Een contrastrijk element op de overgang tussen voorgrond en middengebied.',
+  af:'S', ar:'Punt: M', rc:['Uit',''],
+  ap:['f/8–f/11','Optimaal scherptebereik van de lens met minimale aberratie.'],
+  me:'Multi',
+  w:'Houd het RAW-histogram scherp in de gaten ter voorkoming van uitgebrande luchten.',
+  x:'Gebruik een statief, 2s zelfontspanner en zet SteadyShot op UIT.'
+},
+architectuur:{
+  n:'Architectuur',
+  i:'Strakke verticale lijnen, geometrie en textuurscherpte.',
+  b:'tamron',
+  l:{tamron:'25 mm voor smalle straten en gevels; 100–200 mm voor gevelornamenten.',sony90:'Ideaal voor reliëfs en strakke details zonder vertekening.'},
+  f:25, ft:{tamron:'25–50 mm'}, ms:125,
+  d:'Neem voldoende afstand om de sensor zuiver waterpas te houden tegen perspectiefvertekening.',
+  t:'Een contrastrijk detail op het hoofdvlak van de gevel.',
+  af:'S', ar:'Punt: M', rc:['Uit',''],
+  ap:['f/8–f/11','Scherpte van hoek tot hoek.'],
+  me:'Multi',
+  w:'Herhalende raampatronen kunnen fase-AF misleiden. Gebruik Punt: M of DMF.',
+  x:'Zet het elektronische waterpasniveau aan (DISP) voor exacte uitlijning.'
+},
+nacht:{
+  n:'Avond en nacht',
+  i:'Weinig licht; balanceer lange sluitertijd op statief of gecontroleerde flits.',
+  b:'tamron',
+  l:{tamron:'f/2.8 op 25 mm benut het meeste omgevingslicht.',sony90:'f/2.8 lichtsterk voor nachtelijke details.'},
+  f:25, ft:{tamron:'25–35 mm'}, ms:60,
+  d:'Afhankelijk van het onderwerp.',
+  t:'Een helder verlichte rand of contrasterend lichtpunt.',
+  af:'S', ar:'Punt: M', rc:['Uit',''],
+  ap:['f/2.8–f/4','Maximaal open om licht op te vangen.'],
+  me:'Multi',
+  w:'AF kan gaan jagen in het donker. Gebruik de LED-instellamp van de Godox (lamp-knop rechtsonder) of Scherpstelvergrot. in MF.',
+  x:'Op statief: lage ISO (100–400) en lange sluitertijd. Uit de hand: ISO AUTO tot 6400/12800 of slow-sync flits.'
+},
+sterren:{
+  n:'Sterrenhemel',
+  i:'Sterren als ragfijne lichtpunten vereisen een open diafragma, hoge ISO en stevig statief.',
+  b:'tamron',
+  l:{tamron:'Op 25 mm met f/2.8 voor maximale lichtopbrengst en breed blikveld.',sony90:'Te tele voor sterrenvelden; sterren worden snel streepjes.'},
+  f:25, ft:{tamron:'25 mm'},
+  d:'Donkere hemel op oneindig.',
+  t:'Een heldere ster via Scherpstelvergrot. in MF.',
+  af:'MF', ar:'n.v.t.', rc:['Uit',''],
+  ap:['f/2.8','Maximaal open diafragma.'],
+  me:'n.v.t.',
+  w:'Pas op de 33-MP sensor de conservatieve vuistregel toe: max 10 s op 25 mm om stersporen te voorkomen.',
+  x:'Statief verplicht, SteadyShot UIT, handmatig scherpstellen met Scherpstelvergrot. en 2s zelfontspanner.'
+},
+actie:{
+  n:'Sport en actie',
+  i:'Snelle actie bevriezen met korte sluitertijden en ononderbroken tracking.',
+  b:'tamron',
+  l:{tamron:'Zeer flexibel zoombereik van 25 tot 200 mm met snelle lineaire VXD-focusmotor.',sony90:'Te beperkt in bereik en reactiesnelheid voor veldsport.'},
+  f:135, ft:{tamron:'100–200 mm'}, ms:500, mr:1000, mf:2000,
+  d:'Anticipeer op de bewegingsbaan van de sporter.',
+  t:'Gezicht of romp van de atleet.',
+  af:'C', ar:'Volgen: Zone', rc:['Automatisch',''],
+  ap:['f/2.8–f/5.6','Maximaal open om ultrakorte sluitertijden mogelijk te maken.'],
+  me:'Multi', pr:'Gebal. Nadruk',
+  w:'Zet Contin. opname op Mid of Hi voor snelle reeksen. Gebruik AF-ON om scherpstellen los te koppelen.',
+  x:'Beweeg soepel mee met de actielijn en druk af in gerichte korte bursts.'
+},
+vogel:{
+  n:'Vogels en wildlife',
+  i:'Lange brandpuntsafstand, alertheid en zeer snelle tijden zijn vereist.',
+  b:'tamron',
+  l:{tamron:'Zoom volledig in naar 200 mm (f/5.6).',sony90:'Alleen bruikbaar voor zeer tamme tuinvogels op korte afstand.'},
+  f:200, ft:{tamron:'150–200 mm'}, ms:1000, mr:1000, mf:2500,
+  d:'Houd respectvolle afstand.',
+  t:'Het oog van de vogel.',
+  af:'C', ar:'Volgen: Zone', rc:['Vogel','Oog'],
+  ap:['f/5.6','Maximaal open op 200 mm.'],
+  me:'Spot', pr:'Gebal. Nadruk',
+  w:'Koppel Puntmeetpunt aan het AF-punt! Tegen een felle lucht meet Multi te donker; Spot voorkomt silhouetwerking.',
+  x:'Houd continu voldoende kijk- of vliegruimte vrij in de compositie.'
+},
+water:{
+  n:'Water en beweging',
+  i:'Kies tussen spatwater bevriezen of een zijdezachte waterval creëren.',
+  b:'tamron',
+  l:{tamron:'Ideaal voor zowel weidse kusten (25 mm) als krap gecropte branding (100–200 mm).',sony90:'Fraai voor opspattende druppels en structuren.'},
+  f:35, ft:{tamron:'25–100 mm'}, ms:250, mr:500,
+  d:'Bescherm apparatuur tegen zoutnevel of spatwater.',
+  t:'Een vast voorgrondelement of de breeklijn van het water.',
+  af:'S', ar:'Punt: M', rc:['Uit',''],
+  ap:['f/8–f/11','Scherpte over het gehele wateroppervlak.'],
+  me:'Multi',
+  w:'Voor zijdezacht water overdag is een ND8- of ND64-filter noodzakelijk; diafragmeren naar f/22 veroorzaakt ernstige diffractie.',
+  x:'Bij sluitertijden langer dan 1 seconde: vast statief, SteadyShot UIT en 2s zelfontspanner.'
+},
+stilleven:{
+  n:'Stilleven en detail',
+  i:'Compositie, scherptediepte en lichtval in alle rust dirigeren.',
+  b:'sony90',
+  l:{tamron:'Praktisch bij wisselende opstellingen van 25 tot 200 mm.',sony90:'Ongeëvenaarde randscherpte, microcontrast en bokeh.'},
+  f:90, ft:{tamron:'70–135 mm'}, ms:125,
+  d:'0,5 tot 1,5 meter.',
+  t:'Het belangrijkste visuele rustpunt of detail.',
+  af:'S', ar:'Punt: S', rc:['Uit',''],
+  ap:['f/5.6–f/8','Eén detail. f/11 voor meerdere voorwerpen in het dieptevlak.'],
+  me:'Multi',
+  w:'Let op storende spiegelingen in glanzende voorwerpen; verplaats licht of gebruik een polarisatiefilter.',
+  x:'Gebruik zacht diffuus licht en eventueel een wit reflectieschermpje.'
+},
+reis:{
+  n:'Reisfotografie',
+  i:'Snel schakelen tussen wijdse stadsgezichten en spontane ontmoetingen.',
+  b:'tamron',
+  l:{tamron:'De ultieme alles-in-één reislens van 25 tot 200 mm.',sony90:'Prachtig voor straatportretten en details, maar minder wendbaar als enige lens.'},
+  f:35, ft:{tamron:'25–70 mm'}, ms:125, mr:250,
+  d:'Varieer bewust tussen overzicht en intieme uitsnede.',
+  t:'Bij mensen het oog; bij stadszichten het markantste gebouw.',
+  af:'A', ar:'Zone', rc:['Automatisch',''],
+  ap:['f/5.6–f/8','Betrouwbare scherptediepte over het hele beeld.'],
+  me:'Multi',
+  w:'Loop rond voor het beste standpunt; inzoomen vervangt geen sterke compositie.',
+  x:'Maak eerst een vestigend overzichtsbeeld en zoek daarna de sprekende details.'
+}
+};
+
+/* ---------- Vaste Teksten & Labels ---------- */
+const AFX = {
+  S: ['Enkelvoudige AF','AF-S','Stelt eenmalig scherp en vergrendelt. Voor stilstaande scènes.'],
+  C: ['Continue AF','AF-C','Blijft scherpstellen zolang AF actief is. Onmisbaar voor beweging en tracking.'],
+  A: ['Automatisch. AF','AF-A','Wisselt automatisch tussen enkelvoudig en continu afhankelijk van onderwerpactiviteit.'],
+  DMF: ['DMF','DMF','Autofocus met directe handmatige bijstelmogelijkheid via de scherpstelring.'],
+  MF: ['Handmatig (MF)','MF','Volledig handmatige scherpstelling via de lensring met behulp van vergroting.']
+};
+
+const METER = {
+  'Multi': 'Meet over het gehele beeld. Betrouwbare standaard.',
+  'Spot': 'Meet exact in het gekozen AF-punt (mits Scherpstelpunt-koppeling Aan staat). Voorkomt onderbelichting bij felle achtergrond.',
+  'Hooglicht': 'Meet gericht op het helderste deel om overbelichting tegen te gaan.',
+  'Midden': 'Centrumgericht gemiddelde.',
+  'n.v.t.': 'Handmatige controle via histogram en M.M.-schaal.'
+};
+
+const LIGHT_TXT = {
+  sun: 'Felle zon: hard contrast. Open schaduw opzoeken of invulflits / reflectiescherm inzetten.',
+  soft: 'Zacht, diffuus daglicht. Optimaal en natuurlijk.',
+  shade: 'Open schaduw geeft zacht, koeler licht.',
+  gold: 'Warm ochtend- of avondlicht zorgt voor natuurlijke sfeer en diepte.',
+  indoor: 'Binnenlicht is zwak. Flitser indirect bouncen voorkomt korrelige ISO-ruis.',
+  low: 'Schemering: sluitertijd goed bewaken of flitser/statief inschakelen.',
+  night: 'Nacht: statiefwerk met lange sluitertijden of Godox-flitser als hoofdlicht.',
+  back: 'Tegenlicht: onderwerp dreigt silhouet te worden; spotmeting of invulflits lost dit op.'
+};
+
+const ECL = {
+  sun: ['−0,3 tot −0,7 EV', 'Beschermt felle hooglichten tegen uitbijten.'],
+  soft: ['0 EV', 'Evenwichtig zacht licht vereist zelden correctie.'],
+  shade: ['0 EV', 'Gelijkmatige verdeling; controleer histogram.'],
+  gold: ['0 tot −0,3 EV', 'Behoudt de rijke, warme sfeer van het gouden uur.'],
+  indoor: ['0 tot +0,3 EV', 'Voorkomt dat interieurwanden grauw worden.'],
+  low: ['−0,3 tot −0,7 EV', 'Behoudt de natuurlijke duistere sfeer van de schemering.'],
+  night: ['0 tot −0,7 EV', 'Houdt de nachtelijke achtergrond sfeervol donker.'],
+  back: ['+0,7 tot +1,3 EV', 'Alleen bij Multi-meting om het silhouet op te lichten. Met Spotmeting of invulflits volstaat 0 EV!']
+};
+
+/* ---------- Helpers ---------- */
+const path = (...a) => '<span class="path">' + a.join(' › ') + '</span>';
+const ctl = t => '<span class="ctl">' + t + '</span>';
+const row = (h, how, v, p) => '<div class="row"><div class="rh"><h4>' + h + '</h4><div class="how">' + how + '</div></div><div class="rv"><div class="val">' + v + '</div>' + (p ? '<p>' + p + '</p>' : '') + '</div></div>';
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+function safeDen(f) {
+  const steps = [15,20,30,40,50,60,80,100,125,160,200,250,320,400,500,640,800,1000,1250,1600,2000,2500,3200,4000,8000];
+  return steps.find(x => x >= f) || 8000;
+}
+
+const strip = (cls, cells) => '<div class="strip ' + cls + '">' + cells.map(c => '<div class="cell"><small>' + c[0] + '</small><b>' + c[1] + '</b><span>' + c[2] + '</span></div>').join('') + '</div>';
+const strip4 = (cls, cells) => strip(cls + ' s2', cells);
+
+let lastTamronFocal = 'auto';
+const activeChecklistItems = new Set();
+
+/* ---------- Hoofd Render Functie ---------- */
+function render() {
+  const gk = V('genre'), g = G[gk], s = V('subject'), sup = V('support'),
+        light = V('light'), goal = V('goal'), dsel = V('distance'),
+        lensSel = V('lens'), flashSel = V('flash');
+
+  const lk = lensSel === 'auto' ? g.b : lensSel;
+  const L = LENS[lk];
+
+  /* 1. Brandpuntsafstand & Menu Synchronisatie */
+  const focalDropdown = $('focal');
+  if (lk === 'sony90') {
+    if (!focalDropdown.disabled) {
+      lastTamronFocal = focalDropdown.value;
+    }
+    focalDropdown.value = 'portrait';
+    focalDropdown.disabled = true;
+  } else {
+    if (focalDropdown.disabled) {
+      focalDropdown.disabled = false;
+      focalDropdown.value = lastTamronFocal;
+    } else {
+      lastTamronFocal = focalDropdown.value;
+    }
+  }
+
+  const currentFocalSel = focalDropdown.value;
+  const fmap = {wide: 25, normal: 50, portrait: 85, tele: 150};
+  const fnum = clamp(lk === 'sony90' ? 90 : (currentFocalSel === 'auto' ? g.f : fmap[currentFocalSel]), L.min, L.max);
+
+  let focalTxt = '';
+  let focalNote = '';
+  if (lk === 'sony90') {
+    focalTxt = '90 mm (vast brandpunt)';
+    focalNote = ' Vaste brandpuntsafstand. Verander je positie voor een ander kader.';
+  } else if (currentFocalSel === 'auto') {
+    focalTxt = g.ft.tamron;
+  } else {
+    focalTxt = {wide:'25–35 mm', normal:'40–70 mm', portrait:'85–105 mm', tele:'120–200 mm'}[currentFocalSel];
+  }
+
+  /* 2. Reëel Diafragma & Getoonde Waarde Synchronisatie */
+  const currentMaxAp = getMaxAperture(fnum, lk);
+  let apDisplay = '';
+  let apExplanation = '';
+  let targetFNumber = currentMaxAp;
+
+  if (goal === 'blur') {
+    targetFNumber = currentMaxAp;
+    apDisplay = 'f/' + currentMaxAp;
+    apExplanation = 'Maximaal open voor ' + fnum + ' mm. Vergroot de afstand tussen onderwerp en achtergrond voor extra bokeh.';
+  } else if (goal === 'deep') {
+    targetFNumber = (gk === 'macro' ? 11 : 8);
+    apDisplay = 'f/8–f/11';
+    apExplanation = (gk === 'macro') ? 'Bij macro is f/11 het uiterste tegen diffractie. Maak eventueel een focus stack.' : 'Zorgt voor optimale randscherpte en diepgang.';
+  } else if (goal === 'freeze') {
+    targetFNumber = currentMaxAp;
+    apDisplay = 'f/' + currentMaxAp + (currentMaxAp < 5.6 ? '–f/5.6' : '');
+    apExplanation = 'Lichtsterk gehouden om een snelle sluitertijd mogelijk te maken.';
+  } else if (goal === 'motion') {
+    targetFNumber = (sup === 'tripod' ? 11 : 8);
+    apDisplay = sup === 'tripod' ? 'f/11–f/16' : 'f/8–f/11';
+    apExplanation = sup === 'tripod' ? 'Klein diafragma om de sluitertijd overdag langer te maken.' : 'Geeft speelruimte voor meetrekken (panning).';
+  } else if (s === 'groep') {
+    targetFNumber = Math.max(currentMaxAp, 5.6);
+    apDisplay = 'f/5.6–f/8';
+    apExplanation = 'Zorgt dat meerdere personen in verschillende vlakken scherp blijven.';
+  } else if (gk === 'sterren') {
+    targetFNumber = currentMaxAp;
+    apDisplay = 'f/' + currentMaxAp;
+    apExplanation = 'Maximaal open om zoveel mogelijk sterlicht te vangen.';
+  } else {
+    let baseLow = Math.max(currentMaxAp, 5.6);
+    let baseHigh = Math.max(currentMaxAp, 8);
+    if (gk === 'landschap' || gk === 'architectuur') {
+      targetFNumber = 8.0;
+      apDisplay = 'f/8–f/11';
+      apExplanation = 'Optimaal scherptebereik met minimale lensaberraties.';
+    } else if (gk === 'macro') {
+      targetFNumber = 8.0;
+      apDisplay = 'f/5.6–f/8';
+      apExplanation = 'Goede balans tussen millimeters scherptediepte en lichtinval.';
+    } else if (gk === 'portret') {
+      targetFNumber = currentMaxAp;
+      const portHigh = Math.max(currentMaxAp, 4);
+      apDisplay = currentMaxAp < portHigh ? 'f/' + currentMaxAp + '–f/' + portHigh : 'f/' + currentMaxAp;
+      apExplanation = 'Zachte achtergrond met scherpte op de ogen.';
+    } else {
+      targetFNumber = baseLow;
+      apDisplay = 'f/' + baseLow + (baseHigh > baseLow ? '–f/' + baseHigh : '');
+      apExplanation = g.ap[1] || 'Evenwichtige scherptediepte.';
+    }
+  }
+
+  /* 3. Onzinnige combinaties detecteren */
+  let conflictWarnings = [];
+  if (gk === 'sterren' && light === 'sun') {
+    conflictWarnings.push('<b>Logica-conflict:</b> Je hebt "Sterrenhemel" gekozen met "Felle zon". Overdag zijn er geen sterren zichtbaar; schakel het licht naar "Donker of nacht".');
+  }
+  if (gk === 'sterren' && sup !== 'tripod') {
+    conflictWarnings.push('<b>Waarschuwing:</b> Sterrenfotografie vereist een sluitertijd van meerdere seconden. Uit de hand fotograferen leidt onherroepelijk tot bewogen foto\'s. Gebruik een vast statief.');
+  }
+  if (gk === 'vogel' && sup === 'tripod' && s === 'snel') {
+    conflictWarnings.push('<b>Praktijktip:</b> Snel vliegende vogels volgen vanaf een vast statief is erg lastig zonder vloeistofschommelkop (gimbal). Uit de hand of met monopod biedt vaak veel meer bewegingsvrijheid.');
+  }
+
+  const conflictAlertEl = $('conflict-alert');
+  if (conflictWarnings.length > 0) {
+    conflictAlertEl.innerHTML = '<div class="note danger">' + conflictWarnings.join('<br>') + '</div>';
+  } else {
+    conflictAlertEl.innerHTML = '';
+  }
+
+  /* 4. Sluitertijd en Belichtingsberekeningen */
+  const baseShutter = safeDen(fnum);
+  let dNum = baseShutter;
+  let sh = {};
+  const motionTable = {stil: g.ms||60, rustig: g.mr||250, snel: g.mf||1000, onvoorspelbaar: g.mf||1000, mens: 250, groep: 250};
+  dNum = Math.max(baseShutter, motionTable[s]);
+
+  if (goal === 'freeze') dNum = Math.max(dNum, 1000);
+  if (sup === 'hand_unstable') dNum = safeDen(Math.round(dNum * (fnum > 100 ? 2.5 : 2)));
+  if (sup === 'monopod') dNum = safeDen(Math.round(dNum * 0.8));
+
+  const isSubjectMoving = (s !== 'stil');
+
+  // EV-berekeningen:
+  const sceneEV = EV_TABLE[light] || 12;
+  const exactShutterForIso100 = Math.pow(targetFNumber, 2) / Math.pow(2, sceneEV);
+  const minShutterForIso100Denom = Math.round(1 / exactShutterForIso100);
+
+  let ndFilterAdvise = false;
+
+  if (gk === 'sterren') {
+    const sec = Math.max(4, Math.round(250 / fnum));
+    sh = {v: sec + ' s', sec: sec, p: 'Gebaseerd op brandpuntsafstand (' + fnum + ' mm) en sensordichtheid om stersporen te voorkomen.'};
+  } else if (goal === 'motion') {
+    if (sup === 'tripod') {
+      sh = {v: '1/2 tot 2 s', sec: 1, p: 'Lange sluitertijd op statief. Overdag is een ND-filter (ND64 of ND1000) noodzakelijk tegen overbelichting!'};
+    } else {
+      sh = {v: '1/15 tot 1/60 s', sec: 1/30, p: 'Meetrekken (panning) met het onderwerp. Overdag kan een licht ND-filter (bijv. ND8) nodig zijn bij fel zonlicht.'};
+      if (sceneEV >= 14) ndFilterAdvise = true;
+    }
+  } else if (gk === 'nacht' && sup === 'tripod' && !isSubjectMoving && flashSel === 'none') {
+    sh = {v: '1 tot 15 s', sec: 8, p: 'Op statief bij nacht. Gebruik vaste lage ISO (100–200) voor ultieme zuiverheid.'};
+  } else if (gk === 'water' && sup === 'tripod' && goal !== 'freeze') {
+    sh = {v: '1/2 tot 2 s', sec: 1, p: 'Zijdezacht water. Overdag is een ND-filter vereist om overbelichting bij ISO 100 te voorkomen.'};
+  } else if (sup === 'tripod' && !isSubjectMoving && flashSel === 'none') {
+    if (minShutterForIso100Denom > 60) {
+      dNum = safeDen(minShutterForIso100Denom);
+      sh = {v: '1/' + dNum + ' s of sneller', sec: 1/dNum, p: 'Hoewel de camera op statief staat, vraagt het felle zonlicht bij f/' + targetFNumber + ' minimaal 1/' + dNum + ' s om overbelichting bij ISO 100 te voorkomen.'};
+    } else {
+      sh = {v: '1/15 tot 1/60 s', sec: 1/30, p: 'Vrij te kiezen starttijd op statief bij rustig licht en stilstaand onderwerp.'};
+    }
+  } else {
+    if (minShutterForIso100Denom > dNum && flashSel === 'none') {
+      dNum = safeDen(minShutterForIso100Denom);
+      sh = {v: '1/' + dNum + ' s of sneller', sec: 1/dNum, p: 'Versneld naar 1/' + dNum + ' s ter voorkoming van overbelichting bij f/' + targetFNumber + ' in fel zonlicht (ISO kan niet lager dan 100).'};
+    } else {
+      if (sup === 'hand_unstable') {
+        sh = {v: '1/' + dNum + ' s of sneller', sec: 1/dNum, p: 'Verhoogd naar 1/' + dNum + ' s ter compensatie van handtrilling.'};
+      } else if (sup === 'tripod' && isSubjectMoving) {
+        sh = {v: '1/' + dNum + ' s of sneller', sec: 1/dNum, p: 'Statief elimineert cameratrilling, maar het bewegende onderwerp eist deze korte tijd om scherp te worden.'};
+      } else {
+        sh = {v: '1/' + dNum + ' s of sneller', sec: 1/dNum, p: 'Afgestemd op brandpuntsafstand (' + fnum + ' mm) en bewegingssnelheid.'};
+      }
+    }
+  }
+
+  /* 5. Flitserlogica (Godox V860III) */
+  let flashNeeded = false;
+  let flashModeStr = 'Geen flitser';
+  let flashSettings = 'Je fotografeert uitsluitend met natuurlijk aanwezig licht.';
+
+  const isDarkOrNight = (light === 'night' || light === 'low');
+  const isChallengingLight = (light === 'indoor' || light === 'back' || (light === 'sun' && (s === 'mens' || s === 'groep')));
+  const isNightEligible = (gk !== 'sterren');
+
+  if (flashSel === 'fill') {
+    flashNeeded = true;
+    flashModeStr = 'Actief: Subtiele invulflits';
+  } else if (flashSel === 'bounce') {
+    flashNeeded = true;
+    flashModeStr = 'Actief: Indirect flitsen (Bouncen)';
+  } else if (flashSel === 'main') {
+    flashNeeded = true;
+    flashModeStr = 'Actief: Hoofdlicht in het donker';
+  } else if (flashSel === 'slow') {
+    flashNeeded = true;
+    flashModeStr = 'Actief: Slow-sync flits (omgevingssfeer)';
+  } else if (flashSel === 'auto') {
+    if (isDarkOrNight && isNightEligible) {
+      flashNeeded = true;
+      flashModeStr = 'Geadviseerd: Hoofdlicht (Donker)';
+    } else if (isChallengingLight && isNightEligible) {
+      flashNeeded = true;
+      flashModeStr = (light === 'back' || light === 'sun') ? 'Geadviseerd: Subtiele invulflits' : 'Geadviseerd: Indirect flitsen (Bouncen)';
+    }
+  }
+
+  if (flashNeeded) {
+    if (flashSel === 'slow') {
+      dNum = 30;
+      sh = {v: '1/15 tot 1/60 s (Slow Sync)', sec: 1/30, p: 'Langere sluitertijd laat het omgevingslicht in de schemering binnen, terwijl de flitspuls het hoofdonderwerp bevriest.'};
+    } else if (minShutterForIso100Denom > 250) {
+      dNum = safeDen(minShutterForIso100Denom);
+      sh = {
+        v: '1/' + dNum + ' s (HSS vereist)',
+        sec: 1/dNum,
+        p: 'Door het felle zonlicht bij f/' + targetFNumber + ' is een sluitertijd sneller dan 1/250s noodzakelijk. Druk op de SYNC-knop van de Godox voor High-Speed Sync.'
+      };
+    } else if (dNum > 250 && goal !== 'freeze') {
+      dNum = 250;
+      sh = {
+        v: '1/250 s (X-Sync grens)',
+        sec: 1/250,
+        p: 'Begrensd op de mechanische synchronisatietijd (1/250s) voor maximaal flitsvermogen zonder HSS-verlies.'
+      };
+    }
+
+    const isHSS = (dNum > 250);
+    const hssNote = isHSS ? '<br><b>HSS-waarschuwing:</b> Sluitertijd is korter dan 1/250s. Druk op de <span class="ctl">SYNC</span>-knop op de Godox (icoon <b>H</b>). <i>Let op: HSS kost veel flitsvermogen; diafragmeer eventueel naar f/8 of gebruik een ND-filter om onder 1/250s te blijven.</i>' : '';
+
+    if (flashModeStr.includes('invulflits') || flashSel === 'fill') {
+      flashSettings = 'Zet de Godox op <b>TTL</b> via de schuifknop links. Stel flitscompensatie (FEC) in op <b>−0,7 tot −1,3 EV</b> om schaduwen zacht op te lichten zonder plat te flitsen.' + hssNote;
+    } else if (flashModeStr.includes('Indirect') || flashSel === 'bounce') {
+      flashSettings = 'Zet de Godox op <b>TTL</b>. Draai de flitskop 75° tot 90° omhoog tegen een neutraal wit plafond of wand voor diffuus licht. Begrens ISO AUTO op max 1600–3200.' + hssNote;
+    } else if (flashSel === 'slow') {
+      flashSettings = 'Zet de Godox op <b>TTL</b>. FEC op −0,3 tot −0,7 EV. Camera op M met sluitertijd 1/15–1/60s. Zorgt voor warme sfeer in de achtergrond i.p.v. een zwart gat.' + hssNote;
+    } else {
+      flashSettings = '<b>Hoofdlicht:</b> Godox op <b>TTL</b>. Vaste ISO van 200 tot 400 om ruis te weren. Gebruik de 2W LED-instellamp (fysieke <b>lamp-knop rechtsonder</b> op de flitser) om scherp te stellen in het donker.' + hssNote;
+    }
+
+    if (isDarkOrNight && sup !== 'tripod' && goal !== 'freeze' && flashSel !== 'slow') {
+      sh = {v: '1/125 tot 1/200 s', sec: 1/160, p: 'Met de flitser als hoofdlicht bevriest de ultrakorte flitspuls de beweging. 1/125–1/200s voorkomt bewegingsonscherpte zonder HSS nodig te hebben.'};
+    }
+  }
+
+  /* 6. ISO & Controle op Onderbelichting */
+  const maxL = {sun:1600, soft:3200, shade:3200, gold:3200, indoor:6400, low:6400, night:12800, back:3200};
+  let maxAllowedIso = maxL[light];
+  if (s === 'snel' || s === 'onvoorspelbaar') maxAllowedIso = Math.max(maxAllowedIso, 6400);
+  if (sup === 'hand_unstable') maxAllowedIso = Math.min(12800, Math.max(maxAllowedIso, 6400));
+
+  const actualSeconds = sh.sec || (1 / dNum);
+  const isoNeeded = Math.round((100 * Math.pow(targetFNumber, 2)) / (actualSeconds * Math.pow(2, sceneEV)));
+
+  let underExposureWarning = '';
+  if (!flashNeeded && isoNeeded > maxAllowedIso && gk !== 'sterren') {
+    underExposureWarning = '<div class="note danger"><b>Waarschuwing Onderbelichting:</b> Bij sluitertijd ' + sh.v + ' en f/' + targetFNumber + ' in dit licht is circa <b>ISO ' + isoNeeded.toLocaleString('nl-NL') + '</b> nodig voor een neutrale belichting. Jouw gekozen maximum is ISO ' + maxAllowedIso + '. De foto wordt te donker!<br><b>Mogelijke oplossingen:</b><ul><li>Kies een groter diafragma (lager f-getal).</li><li>Verleng de sluitertijd indien het onderwerp dit toelaat.</li><li>Schakel de Godox V860III flitser in.</li><li>Verhoog het ISO-maximum in het menu naar ' + (isoNeeded > 12800 ? '12800 of hoger' : isoNeeded) + ' en accepteer extra korrel/ruis.</li></ul></div>';
+  }
+
+  const expoAlertEl = $('expo-alert');
+  if (underExposureWarning || ndFilterAdvise) {
+    let extraNd = ndFilterAdvise ? '<div class="note"><b>ND-Filter Advies:</b> Panning (1/15–1/60s) in felle zon (EV 14–15) levert zelfs op f/11 bij ISO 100 overbelichting op. Schroef een ND8- of ND16-filter voor de lens.</div>' : '';
+    expoAlertEl.innerHTML = underExposureWarning + extraNd;
+  } else {
+    expoAlertEl.innerHTML = '';
+  }
+
+  let iso = {}, isoAuto = true;
+  if (gk === 'sterren') {
+    isoAuto = false;
+    iso = {s:'ISO 3200', v:'Vaste ISO 3200', p:'Startpunt (1600–6400). Controleer ruis en belichting via M.M.-index en histogram.'};
+  } else if (flashNeeded && isDarkOrNight && flashSel !== 'slow') {
+    isoAuto = false;
+    iso = {s:'ISO 200–400', v:'Vaste ISO 200 tot 400', p:'Met de flitser als hoofdlicht in het donker voorkomt vaste lage ISO dat de camera de donkere achtergrond met korrelige ruis ophaalt.'};
+  } else if (sup === 'tripod' && !isSubjectMoving && goal !== 'freeze' && flashSel === 'none') {
+    isoAuto = false;
+    const low = (gk === 'nacht' ? '100–400' : '100');
+    iso = {s:'ISO ' + low, v:'Vaste ISO ' + low, p:'Op statief met stilstaand onderwerp garandeert ISO 100 maximale dynamiek en minimale ruis.'};
+  } else {
+    iso = {s:'AUTO', v:'ISO AUTO (100 – ' + maxAllowedIso + ')', p:'Jij kiest sluitertijd en diafragma, de camera vult de ISO aan binnen jouw ingestelde grens.'};
+  }
+
+  /* 7. Lichtmeting & Belichtingscompensatie */
+  let me = g.me;
+  if (gk !== 'sterren') {
+    if (light === 'back') me = 'Spot';
+    else if (light === 'night' && gk !== 'vogel' && flashSel === 'none') me = 'Hooglicht';
+  }
+  const meP = METER[me];
+
+  let ec = {};
+  if (!isoAuto) {
+    ec = {s:'n.v.t.', v:'Niet beschikbaar bij vaste ISO', p:'In M werkt belichtingscompensatie uitsluitend bij ISO AUTO. Bij vaste ISO regel je helderheid met sluitertijd of diafragma.'};
+  } else {
+    if (me === 'Spot') {
+      ec = {s:'0 EV', v:'0 EV (Spotmeting actief)', p:'Omdat Spotmeting gekoppeld is aan het focuspunt, meet de camera het onderwerp zelf al correct. Extra pluscorrectie zou overbelichten.'};
+    } else if (flashNeeded && (light === 'back' || light === 'sun')) {
+      ec = {s:'0 EV', v:'0 EV (Invulflits actief)', p:'De flitser vult schaduwen in. Belichtingscompensatie van de camera blijft neutraal op 0 EV; regel het flitslicht via flitscompensatie (FEC).'};
+    } else if (gk === 'vogel' && me !== 'Spot' && (light === 'sun' || light === 'back' || light === 'soft') && goal !== 'natural') {
+      ec = {s:'+0,7 tot +1,3 EV', v:'+0,7 tot +1,3 EV', p:'Bij Multi-meting raakt een vogel tegen een heldere lucht onderbelicht. Corrigeer omhoog en controleer de zebra.'};
+    } else {
+      ec = {s:ECL[light][0], v:ECL[light][0], p:ECL[light][1]};
+    }
+  }
+
+  /* 8. SteadyShot (IBIS) */
+  let ssVal = '', ssHow = '', ssText = '';
+  const hasLensOSS = L.oss;
+  if (sup === 'tripod') {
+    ssVal = 'Uit (Advies)';
+    ssHow = hasLensOSS ? (ctl('Schakelaar op lens') + path('MENU','Opname','Beeldstabilisatie','SteadyShot')) : path('MENU','Opname','Beeldstabilisatie','SteadyShot');
+    ssText = 'Zet SteadyShot op <b>Uit</b> als vuistregel op statief (vooral bij sluitertijden &gt; 1s) om trillingzoeklussen te voorkomen.' + (hasLensOSS ? ' Zet ook de OSS-knop op de lens op <b>OFF</b>.' : '');
+  } else if (sup === 'monopod') {
+    ssVal = 'Aan';
+    ssHow = hasLensOSS ? (ctl('Schakelaar op lens') + path('MENU','Opname','Beeldstabilisatie','SteadyShot')) : path('MENU','Opname','Beeldstabilisatie','SteadyShot');
+    ssText = 'Laat SteadyShot op <b>Aan</b>. Een monopod dempt verticale trilling, maar IBIS is noodzakelijk voor kantelbewegingen.';
+  } else if (sup === 'hand_unstable') {
+    ssVal = 'Aan (Noodzakelijk)';
+    ssHow = hasLensOSS ? (ctl('Schakelaar op lens') + path('MENU','Opname','Beeldstabilisatie','SteadyShot')) : path('MENU','Opname','Beeldstabilisatie','SteadyShot');
+    ssText = 'Houd SteadyShot altijd op <b>Aan</b>. Combineer met een veilige korte sluitertijd en een rustige burst (Lo).';
+  } else {
+    ssVal = 'Aan';
+    ssHow = hasLensOSS ? (ctl('Schakelaar op lens') + path('MENU','Opname','Beeldstabilisatie','SteadyShot')) : path('MENU','Opname','Beeldstabilisatie','SteadyShot');
+    ssText = 'SteadyShot op <b>Aan</b> bij opnamen uit de hand.' + (hasLensOSS ? ' Lensschakelaar op <b>ON</b>.' : '');
+  }
+
+  /* 9. Scherpstel-logica (AF / MF) */
+  let afk = g.af, ar = g.ar, rc = g.rc.slice();
+
+  if (gk === 'insect') {
+    afk = (sup === 'tripod' && s === 'stil') ? 'DMF' : 'C';
+    ar = 'Punt: S';
+    rc = ['Insect', ''];
+  } else if (gk === 'macro') {
+    if (sup === 'tripod' && s === 'stil') {
+      afk = 'MF';
+      ar = 'n.v.t.';
+    } else {
+      afk = isSubjectMoving ? 'C' : 'DMF';
+      ar = 'Punt: S';
+    }
+  } else if (g.af !== 'MF') {
+    if (s === 'rustig') { afk = 'A'; if (ar.startsWith('Punt')) ar = 'Zone'; }
+    if (s === 'snel' || s === 'onvoorspelbaar') { afk = 'C'; ar = 'Volgen: Zone'; if (rc[0] === 'Uit') rc = ['Automatisch', '']; }
+    if (s === 'mens') { afk = 'S'; ar = 'Zone'; rc = ['Mens', 'Oog']; }
+    if (s === 'groep') { afk = 'S'; ar = 'Breed'; rc = ['Mens', 'Oog']; }
+    if (goal === 'motion') afk = (sup === 'tripod' ? 'S' : 'C');
+    if (afk === 'C' && !ar.startsWith('Volgen') && (s === 'snel' || s === 'onvoorspelbaar' || goal === 'motion')) ar = 'Volgen: Zone';
+  }
+
+  const afi = AFX[afk];
+  const recOn = rc[0] !== 'Uit';
+  const recShort = recOn ? 'Aan: ' + rc[0] + (rc[1] ? ' (' + rc[1] + ')' : '') : 'Uit';
+
+  let recP = '';
+  if (!recOn) recP = 'Onderwerpherkenning staat Uit; focus blijft strikt binnen het geselecteerde kader.';
+  else if (rc[0] === 'Mens') recP = 'Oogherkenning actief. Wijs eventueel oogwissel toe aan een customknop.';
+  else if (rc[0] === 'Vogel' || rc[0] === 'Dier') recP = 'Houd de vogelkop in beeld; oogherkenning schakelt automatisch tussen oog, kop en lichaam.';
+  else if (rc[0] === 'Insect') recP = 'Herkent insectenlichamen en koppen. Bij microscopisch kleine details bijsturen via DMF.';
+  else recP = 'Camera detecteert automatisch mensen, dieren, vogels of voertuigen.';
+
+  const areaP = (ar.startsWith('Volgen') ? 'Volgen vereist Continue AF (AF-C). ' : '') + 'Druk op de C2-knop om snel te wisselen tussen Zone en Punt.';
+  const backBtn = ['C', 'A'].includes(afk) || ['portret', 'vogel', 'actie', 'straat'].includes(gk);
+  const prVal = (afk === 'S' || afk === 'DMF') ? 'AF (Scherptevoorrang)' : 'Gebalanceerde Nadruk';
+  const mfAid = (afk === 'MF' || afk === 'DMF' || sup === 'tripod' || ['macro', 'stilleven', 'nacht', 'sterren', 'landschap'].includes(gk));
+
+  /* 10. Dynamische Afstandswaarschuwing */
+  const minFocusDist = getMinFocusDistanceCm(fnum, lk);
+  let focusDistWarning = '';
+
+  if (dsel === 'close') {
+    if (minFocusDist > 30) {
+      focusDistWarning = '<div class="note danger"><b>Fysieke Afstandslimiet:</b> Op ' + fnum + ' mm heeft de ' + L.name + ' een minimale scherpstelafstand van <b>' + minFocusDist + ' cm</b>. Scherpstellen op 10–30 cm is optisch onmogelijk! Neem meer afstand of zoom uit naar 25 mm (16 cm).</div>';
+    } else if (minFocusDist > 10) {
+      focusDistWarning = '<div class="note"><b>Afstandsgrens:</b> Minimale scherpstelafstand op deze stand is <b>' + minFocusDist + ' cm</b> vanaf de camerasensor. Kom niet dichterbij dan deze grens.</div>';
+    }
+  } else if (dsel === 'near' && minFocusDist > 80) {
+    focusDistWarning = '<div class="note danger"><b>Afstandswaarschuwing:</b> Op ' + fnum + ' mm bedraagt de minimale scherpstelafstand <b>' + minFocusDist + ' cm</b>. Neem minstens 1 meter afstand.</div>';
+  }
+
+  let dist = g.d;
+  if (dsel === 'close') dist = 'Zeer dichtbij: minimale scherpstelafstand is ' + minFocusDist + ' cm (vanaf het sensorvlak-icoon Ø op de camera). ' + dist;
+
+  /* 11. UI Rij-opbouw */
+  const flashControls = ctl('Schakelaar TTL') + ctl('SYNC voor HSS') +
+    ' <a href="https://www.godox.com/product-d/V860III.html" target="_blank" rel="noopener noreferrer" style="font-size:12px;color:var(--expo);text-decoration:underline;margin-top:4px;display:inline-block">Godox productpagina &amp; PDF ↗</a>';
+
+  const expoRows = [
+    row('Diafragma', ctl('Voorste keuzeknop'), apDisplay, apExplanation),
+    row('Sluitertijd', ctl('Achterste keuzeknop L'), sh.v, sh.p),
+    row('Beeldstabilisatie (SteadyShot)', ssHow, ssVal, ssText),
+    row('ISO', ctl('ISO op het besturingswiel') + path('MENU','Belichting/kleur','Belichting','ISO'), iso.v, iso.p),
+    row('Belichtingscorrectie', ctl('Achterste keuzeknop R'), ec.v, ec.p),
+    row('Lichtmeting', path('MENU','Belichting/kleur','Lichtmeting','Lichtmeetfunctie'), me, meP),
+    row('Sluitertype &amp; Drive', path('MENU','Opname','Sluiter/opn.st.'), (gk === 'actie' || gk === 'vogel') ? 'Contin. opname: Hi (Burst) + Mechanische sluiter' : 'Enkele opname + Elektron. 1e gordijn', 'Elektronisch 1e gordijn of mechanische sluiter voorkomt banding en flitsconflicten.'),
+    row('Belichting controleren', ctl('DISP-knop') + path('MENU','Belichting/kleur','Zebra-weergave'), 'Histogram en zebra', 'Histogram en zebra zijn gebaseerd op de JPEG-preview. In RAW heb je ca. 0,5 tot 1 stop extra speelruimte in schaduwen en hooglichten.'),
+    row('Flitser (Godox V860III)', flashControls, flashModeStr, flashSettings)
+  ];
+
+  const focRows = [
+    row('Waar scherpstellen', '', g.t, dist),
+    row('Scherpstelfunctie', path('MENU','Scherpstelling','AF/MF','Scherpstelfunctie'), afi[0] + ' <span class="small">(' + afi[1] + ')</span>', afi[2]),
+    row('Scherpstelgebied', path('MENU','Scherpstelling','Scherpstelgebied','Scherpstelgebied'), ar, areaP),
+    row('Onderwerpherkenning', path('MENU','Scherpstelling','Onderw.herkenn.','Ond.w.herk. in AF'), recShort, recP),
+    row('MF-hulpmiddelen (Peaking &amp; Vergroting)', path('MENU','Scherpstelling','Schrpst.hulpmid.'), mfAid ? 'Aanbevolen: Reliëf (Rood/Geel) + Aut. MF-vergr.' : 'Optioneel (standaard op AF)', mfAid ? 'Bij DMF of MF toont Reliëf (Focus Peaking) de scherpe randen en vergroot het beeld automatisch zodra je aan de scherpstelring draait.' : 'Alleen actief wanneer je handmatig bijstuurt in DMF of MF.'),
+    row('Scherpstellen met AF-ON', path('MENU','Scherpstelling','AF/MF','AF met sluiter'), backBtn ? 'Aanbevolen: AF met sluiter op Uit' : 'Standaard (via ontspanknop)', backBtn ? 'Ontkoppel AF van de sluiterknop. <b>Valkuil:</b> vergeet je AF-ON in te drukken, dan is je foto onscherp!' : 'Ontspanknop half indrukken stelt scherp.'),
+    row('Voorrang (Release Priority)', path('MENU','Scherpstelling','AF/MF','Voork.-inst. in ' + (afk === 'C' ? 'AF-C' : 'AF-S')), prVal, (afk === 'C') ? 'Gebalanceerd tussen scherpsteltijd en reactiesnelheid bij beweging.' : 'Sluiter ontspant alleen als het onderwerp haarscherp is.'),
+    row('Focus Bracketing (Macro/Landschap)', path('MENU','Opname','Opnamemodus','Scherpstelreeks'), (gk === 'macro' || gk === 'bloem' || gk === 'landschap') ? 'Aanbevolen bij statiefwerk' : 'Niet vereist', 'Laat de camera automatisch een reeks opnamen maken met stapsgewijs verschuivende focus voor ultieme dieptescherpte zonder diffractie.')
+  ];
+
+  const lensHtml = '<div class="lenses">' + ['tamron','sony90'].map(k => '<div class="lens' + (k === lk ? ' on' : '') + '"><b>' + LENS[k].name + '</b>' + (k === lk ? '<span class="badge">' + (lensSel === 'auto' ? 'Aanbevolen' : 'Gekozen') + '</span>' : '') + '<p>' + g.l[k] + '</p></div>').join('') + '</div>';
+
+  const checks = [
+    {id: 'chk_m', txt: 'Staat de functiekeuzeknop op de M-stand?'},
+    {id: 'chk_ss', txt: 'Staat SteadyShot passend ingesteld (' + (sup === 'tripod' ? 'UIT voor statief' : 'AAN uit de hand/monopod') + ')?'},
+    {id: 'chk_sh', txt: 'Past de sluitertijd (' + sh.v + ') bij de bewegingssnelheid van het onderwerp?'},
+    {id: 'chk_af', txt: 'Staat het scherpstelpunt exact op het oog of het belangrijkste detail?'},
+    {id: 'chk_sp', txt: 'Is het Spotmeetpunt gekoppeld aan het AF-punt (indien Spotmeting gebruikt wordt)?'}
+  ];
+  if (flashNeeded) {
+    checks.push({id: 'chk_fl1', txt: 'Godox op TTL, FEC ingesteld en HSS actief indien sluitertijd > 1/250s?'});
+    checks.push({id: 'chk_fl2', txt: 'Mechanische sluiter of elektronisch 1e gordijn actief (stille sluiter blokkeert flitser)?'});
+  }
+
+  $('title').textContent = g.n;
+  $('intro').textContent = g.i;
+  $('out').innerHTML =
+    strip('expo', [['Diafragma', apDisplay, 'voorste keuzeknop'], ['Sluitertijd', sh.v, 'achterste keuzeknop L'], ['ISO', iso.s, 'besturingswiel'], ['Flitser', flashNeeded ? 'TTL Actief' : 'Natuurlijk licht', 'Godox V860III']]) +
+    strip4('foc', [['SteadyShot', ssVal, sup === 'tripod' ? 'Statief' : 'Handheld'], ['Scherpstelfunctie', afi[0], afi[1]], ['Scherpstelgebied', ar, 'C2-knop'], ['Onderwerpherkenning', recShort, 'MENU › Scherpstelling']]) +
+    '<div class="sec neutral"><header><h3>Objectief en brandpunt</h3></header><p class="lead">Brandpuntsafstand: <b>' + focalTxt + '</b>.' + focalNote + '</p>' + lensHtml + focusDistWarning + '</div>' +
+    '<div class="sec expo"><header><h3>Belichting, Stabilisatie &amp; Flitser in M</h3></header><p class="lead">Handmatige instellingen op de camera:</p>' + expoRows.join('') + '</div>' +
+    '<div class="sec foc"><header><h3>Scherpstellen &amp; Reeksopnamen</h3></header><p class="lead">Scherpstelmethode en hulpmiddelen:</p>' + focRows.join('') + '</div>' +
+    '<div class="sec neutral"><header><h3>Licht, houding &amp; stabiliteit</h3></header><div class="box"><p style="margin:0 0 8px"><b>Licht:</b> ' + LIGHT_TXT[light] + '</p><p style="margin:0 0 8px"><b>Ondersteuning:</b> ' + (sup === 'hand_unstable' ? 'Uitademing afwachten, ellebogen tegen de romp klemmen en burst in Lo-stand nemen.' : (sup === 'tripod' ? 'Stevig statief, 2s zelfontspanner en SteadyShot als vuistregel UIT.' : (sup === 'monopod' ? 'Monopod met SteadyShot AAN.' : 'Tweehandige vaste cameragrip.'))) + '</p><p style="margin:0;color:var(--muted)">' + g.x + '</p></div><div class="note"><b>Let hier extra op:</b> ' + g.w + '</div></div>' +
+    '<div class="sec neutral"><header><h3>Vlak voor je afdrukt (Checklist)</h3></header><div class="checks" style="margin-top:10px">' +
+    checks.map(c => '<label class="check"><input type="checkbox" data-check-id="' + c.id + '"' + (activeChecklistItems.has(c.id) ? ' checked' : '') + '>' + c.txt + '</label>').join('') + '</div></div>';
+
+  document.querySelectorAll('input[data-check-id]').forEach(chk => {
+    chk.addEventListener('change', () => {
+      if (chk.checked) activeChecklistItems.add(chk.dataset.checkId);
+      else activeChecklistItems.delete(chk.dataset.checkId);
+    });
+  });
+
+  window.plan = g.n + '\n' + g.i + '\n\nObjectief: ' + LENS[lk].name + ' (' + focalTxt + ')' +
+    '\n\nBELICHTING & STABILISATIE (M-stand)\nDiafragma: ' + apDisplay + ' (' + apExplanation + ')' +
+    '\nSluitertijd: ' + sh.v + ' (' + sh.p + ')' +
+    '\nSteadyShot: ' + ssVal +
+    '\nISO: ' + iso.v +
+    '\nBelichtingscorrectie: ' + ec.v +
+    '\nFlitser: ' + flashModeStr + ' – ' + stripHtml(flashSettings) +
+    '\n\nSCHERPSTELLEN\nWaar: ' + g.t +
+    '\nFunctie: ' + afi[0] + ' (' + afi[1] + ')' +
+    '\nGebied: ' + ar +
+    '\nOnderwerpherkenning: ' + recShort +
+    '\nMF-hulpmiddelen: ' + (mfAid ? 'Reliëf + Aut. MF-vergroting aanbevolen' : 'Optioneel');
+}
+
+/* Event listeners voor selectoren */
+['genre','subject','support','light','goal','distance','lens','focal','flash'].forEach(id => {
+  $(id).addEventListener('change', render);
+});
+
+$('reset').onclick = () => {
+  $('genre').value = 'macro';
+  $('subject').value = 'stil';
+  $('support').value = 'hand';
+  $('distance').value = 'auto';
+  $('light').value = 'soft';
+  $('goal').value = 'sharp';
+  $('lens').value = 'auto';
+  $('focal').value = 'auto';
+  $('focal').disabled = false;
+  $('flash').value = 'none';
+  lastTamronFocal = 'auto';
+  activeChecklistItems.clear();
+  render();
+};
+
+$('print').onclick = () => window.print();
+
+$('copy').onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(window.plan);
+    $('copy').textContent = 'Gekopieerd!';
+    setTimeout(() => $('copy').textContent = 'Kopieer compleet opnameplan', 1600);
+  } catch(e) {
+    alert('Kopiëren niet toegestaan door de browser. Gebruik de printknop om op te slaan als PDF.');
+  }
+};
+
+render();
+</script>
+</body>
+</html>
